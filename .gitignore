@@ -1,0 +1,3 @@
+#compiled lisp files
+*.fasl
+*.wx64fsl
