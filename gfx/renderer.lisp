@@ -28,7 +28,7 @@
         (b (imago:color-blue  (renderer-color color)))
         (a (imago:color-alpha (renderer-color color))))
     (imago:make-color (/ (* r (imago:color-red   amb)) 255)
-                      (/ (w* g (imago:color-green amb)) 255)
+                      (/ (* g (imago:color-green amb)) 255)
                       (/ (* b (imago:color-blue  amb)) 255)
                       (/ (* a (imago:color-alpha amb)) 255))))
 

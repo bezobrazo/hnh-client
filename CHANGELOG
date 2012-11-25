@@ -4,6 +4,7 @@
 - added/fixed hnh-client.lisp from glop to glfw
 - fixed util/vec2n.lisp naming
 - fixed gfx/tex.lisp and gfx/renderer.lisp errors
-- added more types to netowkr/message.lisp
+- added more types to network/message.lisp
 - started on network/remote-ui.lisp
 - started work on network/session.lisp
+- cleaned up asd file
