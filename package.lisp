@@ -1,5 +1,9 @@
 ;;;; package.lisp
 
 (defpackage #:hnh-client
-  (:use #:cl))
+  (:use #:cl)
+  (:export
+   ;;config
+   #:*window-width*
+   #:*window-height*))
 

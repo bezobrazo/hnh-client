@@ -1,0 +1,9 @@
+11/24/12
+- changed glop to glfw
+- added/fixed ui/ui.lisp, ui/widget.lisp
+- added/fixed hnh-client.lisp from glop to glfw
+- fixed util/vec2n.lisp naming
+- fixed gfx/tex.lisp and gfx/renderer.lisp errors
+- added more types to netowkr/message.lisp
+- started on network/remote-ui.lisp
+- started work on network/session.lisp

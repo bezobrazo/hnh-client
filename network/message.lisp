@@ -12,7 +12,11 @@
 (defstruct message
   (off 0 :type fixnum)
   (type -1 :type fixnum)
-  (blob #() :type vector))
+  (blob #() :type vector)
+  ;;session stuff
+  (last 0 :type fixnum)
+  (seq 0 :type fixnum)
+  (retx 0 :type fixnum))
 
 
 (defun message-push-bytes (msg src off len)
@@ -68,3 +72,36 @@
                   while (not (zerop (aref (message-blob msg) i)))
                   finally (return i))))
     (uba->str (message-blob msg) (message-off msg) end)))
+
+(defun message-pop-vec (msg)
+  "Returns the next vector within the message"
+  (make-instance 'hnh-utils:vec 
+                 :x (message-pop-sint msg 4)
+                 :y (message-pop-sint msg 4)))
+
+(defun message-pop-color (msg)
+  "Returns the next color within the message"
+  (imago:make-color (message-pop-uint msg 1)
+                    (message-pop-uint msg 1)
+                    (message-pop-uint msg 1)
+                    (message-pop-uint msg 1)))
+
+(defun message-pop-list (msg)
+  "Returns the next list of things within the messge"
+  (let ((lst nil))
+    (loop do
+         (when (>= (message-off msg)
+                   (length (message-blob msg)))
+           (return-from message-pop-list (nreverse lst)))
+         (let ((type (message-pop-uint msg 1)))
+           (cond 
+             ((= type +t-end+)
+              (return-from message-pop-list (nreverse lst)))
+             ((= type +t-int+)
+              (setf lst (push (message-pop-sint msg 4) lst)))
+             ((= type +t-str+)
+              (setf lst (push (message-pop-str msg) lst)))
+             ((= type +t-coord+)
+              (setf lst (push (message-pop-vec msg) lst)))
+             ((= type +t-color+)
+              (setf lst (push (message-pop-color msg) lst))))))))

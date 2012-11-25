@@ -4,15 +4,15 @@
 (defstruct tex
   ;;backing-data, should be a png
   (image nil :type imago:image)
-  (size nil :type hnh-utils:vec2n)
+  (size nil :type hnh-utils:vec)
   ;;OpenGL
   (glid -1 :type number)
-  (real-size nil :type hnh:utils:vec2n))
+  (real-size nil :type hnh-utils:vec))
 
 (defun make-texture (image)
   "easier make function"
   (make-tex :image image
-            :size (make-instance 'vec2n 
+            :size (make-instance 'vec
                                  :x (imago:image-width image)
                                  :y (imago:image-height image))))
 
@@ -28,7 +28,7 @@
   (let* ((w (next-pow-2 (imago:image-width (tex-image tex))))
          (h (next-pow-2 (imago:image-height (tex-image tex))))
          (buff (make-array (* w h 4) :element-type '(unsigned-byte 8))))
-    (setf (tex-real-size (make-instance 'vec2n :x w :y h)))
+    (setf tex-real-size (make-instance 'vec :x w :y h))
     (loop for x from 0 to (imago:image-width (tex-image tex))
        do (loop for y from 0 to (imago:image-height (tex-image tex))
              do (setf (aref buff (+ (* x w 4) (* y 4) 0)) 
@@ -59,8 +59,8 @@
     (gl:tex-image-2d :target
                      0
                      :rgba
-                     (hnh-utils:vec2n-x (tex-real-size tex)) 
-                     (hnh-utils:vec2n-y (tex-real-size tex))
+                     (hnh-utils:x (tex-real-size tex)) 
+                     (hnh-utils:y (tex-real-size tex))
                      0
                      :rgba 
                      :gl-unsigned-byte
